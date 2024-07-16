@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 
-
 {% block content %}
 {% load cart %}
 {% load custom_filter %}
@@ -11,33 +10,45 @@
         <hr>
         <table class="table">
             <thead>
-                <tr>
-                    <th>Sno.</th>
-                    <th>image</th>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                </tr>
+            <tr>
+                <th>Sno.</th>
+                <th>image</th>
+                <th>Product</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Status</th>
+            </tr>
             </thead>
             <tbody>
-                {% for product in products %}
-                <tr>
-                    <td>{{forloop.counter}}.</td>
-                    <td><img style="height: 80px;" class="" src="{{product.image.url}}" alt=""></td>
-                    <td>{{product.name}}</td>
-                    <td>{{product.price|currency}}</td>
-                    <td>{{product|cart_quantity:request.session.cart}}</td>
-                    <td>{{product|price_total:request.session.cart|currency}}</td>
-                </tr>
-                {% endfor %}
+            {% for order in orders %}
+            <tr>
+                <td>{{forloop.counter}}.</td>
+                <td><img style="height: 80px;" class="" src="{{order.product.image.url}}" alt=""></td>
+                <td>{{order.product.name}}</td>
+                <td>{{order.date}}</td>
+                <td>{{order.price|currency}}</td>
+                <td>{{order.quantity}}</td>
+                <td>{{order.quantity|multiply:order.price|currency}}</td>
+                {% if order.status %}
+                <td>
+                    <small class="badge badge-success">Completed</small>
+                </td>
+                {% else %}
+                <td>
+                    <small class="badge badge-warning">Pending</small>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
             </tbody>
-            
+
         </table>
-    
-        
-    </div> 
+
+
+    </div>
 </div>
- 
+
 
 {% endblock %}
